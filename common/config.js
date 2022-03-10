@@ -14,7 +14,8 @@ var config = {
     USE_PROXY: { type: "String" },
     PROXY_TOKEN_URL: { type: "String" },
     PROXY_PERSON_URL: { type: "String" },
-    DEBUG_LEVEL: { type: "String" }
+    DEBUG_LEVEL: { type: "String" },
+    PEM_PATH: { type: "String" }
 }
 
 module.exports = config;

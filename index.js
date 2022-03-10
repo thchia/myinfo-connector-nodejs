@@ -18,7 +18,8 @@ logger.level = CONFIG.DEBUG_LEVEL;
  * This is a constructor to validate and initialize all the config variables
  * 
  * @param {{MYINFO_SIGNATURE_CERT_PUBLIC_CERT : string, 
- * CLIENT_SECURE_CERT: string, 
+ * READ_MYINFO_PUBLIC_CERT : async function,
+ * CLIENT_SECURE_CERT : string, 
  * CLIENT_SECURE_CERT_PASSPHRASE : string, 
  * READ_SECURE_CERT : async function,
  * CLIENT_ID: string,
@@ -30,7 +31,8 @@ logger.level = CONFIG.DEBUG_LEVEL;
  * PERSON_URL : string,
  * USE_PROXY : string, 
  * PROXY_TOKEN_URL : string, 
- * PROXY_PERSON_URL : string
+ * PROXY_PERSON_URL : string,
+ * PEM_PATH : string
  * }}
  */
 class MyInfoConnector {
@@ -59,6 +61,9 @@ class MyInfoConnector {
       throw (constant.ERROR_CONFIGURATION_PUBLIC_CERT_NOT_FOUND);
     } else {
       CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT = config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT;
+    }
+    if (config.READ_MYINFO_PUBLIC_CERT) {
+      CONFIG.READ_MYINFO_PUBLIC_CERT = config.READ_MYINFO_PUBLIC_CERT
     }
     if (!config.CLIENT_ID) {
       throw (constant.ERROR_CONFIGURATION_CLIENT_ID_NOT_FOUND);
