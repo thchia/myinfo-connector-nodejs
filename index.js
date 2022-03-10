@@ -58,7 +58,7 @@ class MyInfoConnector {
     if (!config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT) {
       throw (constant.ERROR_CONFIGURATION_PUBLIC_CERT_NOT_FOUND);
     } else {
-      CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT = fs.readFileSync(config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, 'utf8');
+      CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT = config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT;
     }
     if (!config.CLIENT_ID) {
       throw (constant.ERROR_CONFIGURATION_CLIENT_ID_NOT_FOUND);
@@ -386,7 +386,11 @@ class MyInfoConnector {
    */
   #getPersonDataWithKey = function (accessToken, txnNo, privateKey) {
     return new Promise((resolve, reject) => {
-      this.securityHelper.verifyJWS(CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, accessToken)
+      this.securityHelper.verifyJWS(
+        CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT,
+        accessToken,
+        CONFIG.READ_MYINFO_PUBLIC_CERT
+      )
         .then(decodedToken => {
           logger.debug('Decoded Access Token (from MyInfo Token API): ', decodedToken);
           if (!decodedToken) {
@@ -424,7 +428,11 @@ class MyInfoConnector {
               return Promise.reject(constant.INVALID_DATA_OR_SIGNATURE);
             } else {
               logger.debug('Decrypted JWE: ', decryptResponse);
-              return this.securityHelper.verifyJWS(CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, decryptResponse);
+              return this.securityHelper.verifyJWS(
+                CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT,
+                decryptResponse,
+                CONFIG.READ_MYINFO_PUBLIC_CERT
+              );
             }
           }
         })

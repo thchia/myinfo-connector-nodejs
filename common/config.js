@@ -1,5 +1,6 @@
 var config = {
     MYINFO_SIGNATURE_CERT_PUBLIC_CERT: { type: "String" },
+    READ_MYINFO_PUBLIC_CERT: { type: "Function" },
     CLIENT_SECURE_CERT: { type: "String" },
     CLIENT_SECURE_CERT_PASSPHRASE: { type: "String" },
     READ_SECURE_CERT: { type: "Function" },
