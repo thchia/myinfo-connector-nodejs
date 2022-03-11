@@ -3,6 +3,7 @@
   "version": "0.0.12-1",
   "description": "MyInfo Library for NodeJs",
   "main": "index.js",
+  "types": "./index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
