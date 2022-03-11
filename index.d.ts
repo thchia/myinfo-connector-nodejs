@@ -1,10 +1,10 @@
 declare module "@thchia/myinfo-connector-nodejs" {
   export interface MyInfoConnectorConfig {
     MYINFO_SIGNATURE_CERT_PUBLIC_CERT: string;
-    READ_MYINFO_PUBLIC_CERT: (path: string) => Promise<Buffer>;
+    READ_MYINFO_PUBLIC_CERT?: (path: string) => Promise<Buffer>;
     CLIENT_SECURE_CERT: string;
     CLIENT_SECURE_CERT_PASSPHRASE: string;
-    READ_SECURE_CERT: (path: string) => Promise<Buffer>;
+    READ_SECURE_CERT?: (path: string) => Promise<Buffer>;
     CLIENT_ID: string;
     CLIENT_SECRET: string;
     REDIRECT_URL: string;
