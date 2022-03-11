@@ -1,4 +1,6 @@
 
+> This is a fork, which enables remote loading of the MyInfo public key cert and your own private key cert.
+
 # MyInfo Connector NodeJS
 
 [![Known Vulnerabilities](https://snyk.io/test/github/singpass/myinfo-connector-nodejs/badge.svg)](https://snyk.io/test/github/singpass/myinfo-connector-nodejs)
@@ -157,7 +159,3 @@ This method takes in the accessToken and txnNo and returns the person data.
    */
   getPersonData = function (accessToken, txnNo)
 ```
-
-## Reporting Issue
-
-You may contact our [support](mailto:support@myinfo.gov.sg?subject=[MyInfoLib-NodeJs]%20Issue%20) for any other technical issues, and we will respond to you within 5 working days.

@@ -1,7 +1,9 @@
 var config = {
     MYINFO_SIGNATURE_CERT_PUBLIC_CERT: { type: "String" },
+    READ_MYINFO_PUBLIC_CERT: { type: "Function" },
     CLIENT_SECURE_CERT: { type: "String" },
     CLIENT_SECURE_CERT_PASSPHRASE: { type: "String" },
+    READ_SECURE_CERT: { type: "Function" },
     CLIENT_ID: { type: "String" },
     CLIENT_SECRET: { type: "String" },
     REDIRECT_URL: { type: "String" },
@@ -12,7 +14,8 @@ var config = {
     USE_PROXY: { type: "String" },
     PROXY_TOKEN_URL: { type: "String" },
     PROXY_PERSON_URL: { type: "String" },
-    DEBUG_LEVEL: { type: "String" }
+    DEBUG_LEVEL: { type: "String" },
+    PEM_PATH: { type: "String" }
 }
 
 module.exports = config;

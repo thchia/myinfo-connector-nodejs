@@ -18,8 +18,10 @@ logger.level = CONFIG.DEBUG_LEVEL;
  * This is a constructor to validate and initialize all the config variables
  * 
  * @param {{MYINFO_SIGNATURE_CERT_PUBLIC_CERT : string, 
- * CLIENT_SECURE_CERT: string, 
+ * READ_MYINFO_PUBLIC_CERT : async function,
+ * CLIENT_SECURE_CERT : string, 
  * CLIENT_SECURE_CERT_PASSPHRASE : string, 
+ * READ_SECURE_CERT : async function,
  * CLIENT_ID: string,
  * CLIENT_SECRET :string ,
  * REDIRECT_URL : string,
@@ -29,7 +31,8 @@ logger.level = CONFIG.DEBUG_LEVEL;
  * PERSON_URL : string,
  * USE_PROXY : string, 
  * PROXY_TOKEN_URL : string, 
- * PROXY_PERSON_URL : string
+ * PROXY_PERSON_URL : string,
+ * PEM_PATH : string
  * }}
  */
 class MyInfoConnector {
@@ -57,7 +60,10 @@ class MyInfoConnector {
     if (!config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT) {
       throw (constant.ERROR_CONFIGURATION_PUBLIC_CERT_NOT_FOUND);
     } else {
-      CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT = fs.readFileSync(config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, 'utf8');
+      CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT = config.MYINFO_SIGNATURE_CERT_PUBLIC_CERT;
+    }
+    if (config.READ_MYINFO_PUBLIC_CERT) {
+      CONFIG.READ_MYINFO_PUBLIC_CERT = config.READ_MYINFO_PUBLIC_CERT
     }
     if (!config.CLIENT_ID) {
       throw (constant.ERROR_CONFIGURATION_CLIENT_ID_NOT_FOUND);
@@ -83,6 +89,9 @@ class MyInfoConnector {
       throw (constant.ERROR_CONFIGURATION_CLIENT_SECURE_CERT_PASSPHRASE_NOT_FOUND);
     } else {
       CONFIG.CLIENT_SECURE_CERT_PASSPHRASE = config.CLIENT_SECURE_CERT_PASSPHRASE;
+    }
+    if (config.READ_SECURE_CERT) {
+      CONFIG.READ_SECURE_CERT = config.READ_SECURE_CERT;
     }
     if (!config.ENVIRONMENT) {
       throw (constant.ERROR_CONFIGURATION_ENVIRONMENT_NOT_FOUND);
@@ -163,7 +172,11 @@ class MyInfoConnector {
       throw (constant.ERROR_UNKNOWN_NOT_INIT);
     }
     return new Promise((resolve, reject) => {
-      this.securityHelper.decryptPrivateKey(CONFIG.CLIENT_SECURE_CERT, CONFIG.CLIENT_SECURE_CERT_PASSPHRASE)
+      this.securityHelper.decryptPrivateKey(
+        CONFIG.CLIENT_SECURE_CERT,
+        CONFIG.CLIENT_SECURE_CERT_PASSPHRASE,
+        CONFIG.READ_SECURE_CERT
+      )
         .then(result => {
           logger.debug('Client Private Key: ', CONFIG.CLIENT_SECURE_CERT);
           let certificate = result;
@@ -200,7 +213,11 @@ class MyInfoConnector {
       throw (constant.ERROR_UNKNOWN_NOT_INIT);
     }
     return new Promise((resolve, reject) => {
-      this.securityHelper.decryptPrivateKey(CONFIG.CLIENT_SECURE_CERT, CONFIG.CLIENT_SECURE_CERT_PASSPHRASE)
+      this.securityHelper.decryptPrivateKey(
+        CONFIG.CLIENT_SECURE_CERT,
+        CONFIG.CLIENT_SECURE_CERT_PASSPHRASE,
+        CONFIG.READ_SECURE_CERT
+      )
         .then(result => {
           logger.debug('Client Private Key: ', CONFIG.CLIENT_SECURE_CERT);
           let privateKey = (result.key);
@@ -374,7 +391,11 @@ class MyInfoConnector {
    */
   #getPersonDataWithKey = function (accessToken, txnNo, privateKey) {
     return new Promise((resolve, reject) => {
-      this.securityHelper.verifyJWS(CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, accessToken)
+      this.securityHelper.verifyJWS(
+        CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT,
+        accessToken,
+        CONFIG.READ_MYINFO_PUBLIC_CERT
+      )
         .then(decodedToken => {
           logger.debug('Decoded Access Token (from MyInfo Token API): ', decodedToken);
           if (!decodedToken) {
@@ -412,7 +433,11 @@ class MyInfoConnector {
               return Promise.reject(constant.INVALID_DATA_OR_SIGNATURE);
             } else {
               logger.debug('Decrypted JWE: ', decryptResponse);
-              return this.securityHelper.verifyJWS(CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT, decryptResponse);
+              return this.securityHelper.verifyJWS(
+                CONFIG.MYINFO_SIGNATURE_CERT_PUBLIC_CERT,
+                decryptResponse,
+                CONFIG.READ_MYINFO_PUBLIC_CERT
+              );
             }
           }
         })
