@@ -30,13 +30,13 @@ declare module "@thchia/myinfo-connector-nodejs" {
     value: string | number | boolean;
   }
 
-  interface PersonCodeAtribute extends PersonBaseAttribute {
+  interface PersonCodeAttribute extends PersonBaseAttribute {
     code: string;
     desc: string;
   }
 
-  interface PersonAddressAttribute extends PersonBaseAttribute {
-    type: string;
+  interface PersonSgAddressAttribute extends PersonBaseAttribute {
+    type: "SG";
     block: { value: string };
     building: { value: string };
     floor: { value: string };
@@ -48,6 +48,14 @@ declare module "@thchia/myinfo-connector-nodejs" {
       desc: string;
     };
   }
+
+  interface PersonUnformattedAddressAttribute extends PersonBaseAttribute {
+    type: "UNFORMATTED";
+    line1: { value: string };
+    line2: { value: string };
+  }
+
+  type PersonAddressAttribute = PersonSgAddressAttribute | PersonUnformattedAddressAttribute;
 
   interface PersonPropertyOwnershipAttribute extends PersonBaseAttribute {
     noofowners: { value: number };
@@ -282,39 +290,39 @@ declare module "@thchia/myinfo-connector-nodejs" {
     aliasname: PersonValueAttribute;
     hanyupinyinaliasname: PersonValueAttribute;
     marriedname: PersonValueAttribute;
-    sex: PersonCodeAtribute;
-    race: PersonCodeAtribute;
-    secondaryrace: PersonCodeAtribute;
-    dialect: PersonCodeAtribute;
-    nationality: PersonCodeAtribute;
-    dob: PersonCodeAtribute;
-    birthcountry: PersonCodeAtribute;
-    residentialstatus: PersonCodeAtribute;
+    sex: PersonCodeAttribute;
+    race: PersonCodeAttribute;
+    secondaryrace: PersonCodeAttribute;
+    dialect: PersonCodeAttribute;
+    nationality: PersonCodeAttribute;
+    dob: PersonValueAttribute;
+    birthcountry: PersonCodeAttribute;
+    residentialstatus: PersonCodeAttribute;
     passportnumber: PersonValueAttribute;
     passportexpirydate: PersonValueAttribute;
     regadd: PersonAddressAttribute;
     mailadd: PersonAddressAttribute;
     billadd: PersonAddressAttribute;
-    housingtype: PersonCodeAtribute;
-    hdbtype: PersonCodeAtribute;
+    housingtype: PersonCodeAttribute;
+    hdbtype: PersonCodeAttribute;
     hdbownership: PersonPropertyOwnershipAttribute[];
     ownerprivate: PersonValueAttribute;
     email: PersonValueAttribute;
     homeno: PersonContactNumberAttribute;
     mobileno: PersonContactNumberAttribute;
-    marital: PersonCodeAtribute;
+    marital: PersonCodeAttribute;
     marriagecertno: PersonValueAttribute;
-    countryofmarriage: PersonCodeAtribute;
+    countryofmarriage: PersonCodeAttribute;
     marriagedate: PersonValueAttribute;
     divorcedate: PersonValueAttribute;
     childrenbirthrecords: PersonBirthRecordAttribute[];
     sponsoredchildrenrecords: PersonChildSponsorAttribute[];
-    edulevel: PersonCodeAtribute;
+    edulevel: PersonCodeAttribute;
     gradyear: PersonValueAttribute;
-    schoolname: PersonCodeAtribute; // Example shows value too?
+    schoolname: PersonCodeAttribute; // Example shows value too?
     occupation: PersonValueAttribute;
     employment: PersonValueAttribute;
-    passtype: PersonCodeAtribute;
+    passtype: PersonCodeAttribute;
     passstatus: PersonValueAttribute;
     passexpirydate: PersonValueAttribute;
     employmentsector: PersonValueAttribute;
